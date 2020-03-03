@@ -1,2 +1,6 @@
 server:
   type: dev
+  ops:
+    - "26f8cf1d-f9e1-470c-85cb-f670cf30de57"
+    - "e92cfbaf-ac42-4fb3-b429-ebd4d92bbd0c"
+    - "c39a0579-3463-4af7-a118-6011a050a63f"
