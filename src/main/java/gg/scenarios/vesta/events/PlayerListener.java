@@ -1,6 +1,8 @@
 package gg.scenarios.vesta.events;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import gg.scenarios.vesta.Vesta;
 
 import gg.scenarios.vesta.managers.profile.Profile;
@@ -10,8 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class PlayerListener implements Listener {
@@ -37,15 +41,27 @@ public class PlayerListener implements Listener {
                 Profile profile = new Profile(player.getUniqueId());
                 profile.setLatestIP(player.getAddress().toString());
                 profile.setChatColor(ChatColor.getByChar(found.getString("chatColor")));
-                profile.setIps(vesta.getGson().fromJson((JsonElement) found.get("ips"), profile.getIps().getClass()));
+                ArrayList<String> ips= (ArrayList<String>) vesta.getGson().fromJson(found.getString("ips"),
+                        new TypeToken<ArrayList<String>>() {
+                        }.getType()) ;
+                ips.stream().forEach(s -> {
+                    profile.getIps().add(s);
+                });
                 player.sendMessage(ChatColor.GREEN + "Loaded old profile.");
             }else{
                 Profile profile = new Profile(player.getUniqueId());
                 profile.setLatestIP(player.getAddress().toString());
                 profile.setChatColor(ChatColor.GREEN);
                 profile.getIps().add(profile.getLatestIP());
+                profile.addToDatabase();
                 player.sendMessage(ChatColor.GREEN + "Created new profile.");
             }
         }
+    }
+
+    @EventHandler
+    public void onLeave(PlayerQuitEvent event){
+        Profile.getProfileFromUUID(event.getPlayer().getUniqueId()).update();
+        Profile.users.remove(event.getPlayer().getUniqueId());
     }
 }

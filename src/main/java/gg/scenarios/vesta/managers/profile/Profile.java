@@ -19,24 +19,30 @@ import java.util.UUID;
 @Setter
 public class Profile {
 
-    private static HashMap<UUID, Profile> users = new HashMap<>();
+    public static HashMap<UUID, Profile> users = new HashMap<>();
     private Vesta vesta = Vesta.getInstance();
 
     private UUID uuid;
-    private Player player = Bukkit.getPlayer(uuid);
+    private Player player = null;
     private String username;
     private ChatColor chatColor;
-    private String prefix = vesta.getChat().getPlayerPrefix(player);
+//    private String prefix = vesta.getChat().getPlayerPrefix(player);
     private String latestIP;
     private List<String> ips;
 
     public Profile(UUID uuid) {
         this.uuid = uuid;
-        username = player.getName();
         ips = new ArrayList<>();
+        player = Bukkit.getPlayer(uuid);
+        username = player.getName();
         users.put(uuid, this);
+
     }
 
+
+    public static Profile getProfileFromUUID(UUID uuid){
+        return users.get(uuid);
+    }
 
     public void addToDatabase(){
         Profile profile = this;
@@ -44,7 +50,7 @@ public class Profile {
         document.put("uuid", profile.getUuid().toString());
         document.put("name", profile.getPlayer().getName());
         document.put("chatColor", this.chatColor.getChar());
-        document.put("prefix", prefix);
+      //  document.put("prefix", prefix);
         document.put("ip", this.latestIP);
         document.put("ips", vesta.getGson().toJson(ips));
         vesta.getProfiles().insertOne(document);
@@ -57,7 +63,7 @@ public class Profile {
                 Updates.combine(
                         Updates.set("name", profile.getPlayer().getName()),
                         Updates.set("chatColor", this.chatColor.getChar()),
-                        Updates.set("prefix", this.prefix),
+                     //   Updates.set("prefix", this.prefix),
                         Updates.set("ip", profile.getLatestIP()),
                         Updates.set("ips", vesta.getGson().toJson(ips))));
     }
