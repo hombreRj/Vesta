@@ -1,5 +1,7 @@
 server:
-  type: dev
+  mongo:
+    uri: 'mongodb://localhost'
+  type: DEV
   ops:
     - "26f8cf1d-f9e1-470c-85cb-f670cf30de57"
     - "e92cfbaf-ac42-4fb3-b429-ebd4d92bbd0c"

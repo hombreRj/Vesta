@@ -1,3 +1,9 @@
 
 *.xml
 *.iml
+*.class
+*.jar
+*.lst
+target/classes/config.yml
+target/classes/plugin.yml
+target/maven-archiver/pom.properties

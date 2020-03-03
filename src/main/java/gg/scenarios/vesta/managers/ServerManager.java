@@ -19,6 +19,13 @@ public class ServerManager {
     private ServerType serverType;
     private List<UUID> ops = new ArrayList<>();
 
+    public boolean isDev(){
+        if (serverType.equals(ServerType.DEV)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     public ServerManager() {
         this.serverType = ServerType.valueOf(config.getString("server.type"));

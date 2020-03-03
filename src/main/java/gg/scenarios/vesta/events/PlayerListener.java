@@ -1,12 +1,17 @@
 package gg.scenarios.vesta.events;
 
+import com.google.gson.JsonElement;
 import gg.scenarios.vesta.Vesta;
 
+import gg.scenarios.vesta.managers.profile.Profile;
+import org.bson.Document;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.util.ArrayList;
 
 
 public class PlayerListener implements Listener {
@@ -25,6 +30,21 @@ public class PlayerListener implements Listener {
                 player.setOp(true);
                 player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Your OP powers have been granted!");
 
+            }
+
+            Document found = vesta.getProfiles().find(new Document("uuid",event.getPlayer().getUniqueId().toString())).first();
+            if (found != null){
+                Profile profile = new Profile(player.getUniqueId());
+                profile.setLatestIP(player.getAddress().toString());
+                profile.setChatColor(ChatColor.getByChar(found.getString("chatColor")));
+                profile.setIps(vesta.getGson().fromJson((JsonElement) found.get("ips"), profile.getIps().getClass()));
+                player.sendMessage(ChatColor.GREEN + "Loaded old profile.");
+            }else{
+                Profile profile = new Profile(player.getUniqueId());
+                profile.setLatestIP(player.getAddress().toString());
+                profile.setChatColor(ChatColor.GREEN);
+                profile.getIps().add(profile.getLatestIP());
+                player.sendMessage(ChatColor.GREEN + "Created new profile.");
             }
         }
     }
