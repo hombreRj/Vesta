@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 MongoDB, Java 8+
-```
+
 https://www.mongodb.com/download-center```
 
 ### Installing
@@ -16,31 +16,20 @@ https://www.mongodb.com/download-center```
 A step by step series of examples that tell you how to get a development env running
 
 Clone repo
+
 ```
 git clone ...
 ```
 
 
 Export with `mvn clean package`
-## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
 
 ### And coding style tests
 
 Explain what these tests test and why
 
-```
 Give an example
-```
 
 ## Deployment
 
