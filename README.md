@@ -40,6 +40,7 @@ Add additional notes about how to deploy this on a live system
 * [MongoDB](https://www.mongodb.com/download-center) - Database
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [Lombok](https://projectlombok.org/) - Clean code
+* [InventoryUtils](https://gist.github.com/blok601) - Inventory Management
 
 ## Authors
 
