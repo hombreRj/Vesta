@@ -1,13 +1,19 @@
 package gg.scenarios.vesta;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Vesta extends JavaPlugin {
+@Getter
+@Setter
+public class Vesta extends JavaPlugin {
+
+    @Getter
+    public static Vesta instance;
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-
+        instance = this;
     }
 
     @Override
