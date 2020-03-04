@@ -30,6 +30,7 @@ public class Profile {
     private String prefix;
     private String latestIP;
     private List<String> ips;
+    private UUID tagUUID = null;
 
     public Profile(UUID uuid) {
         this.uuid = uuid;

@@ -78,47 +78,51 @@ public class PlayerListener implements Listener {
     public void onInteract(InventoryClickEvent event){
         if (event.getWhoClicked() instanceof Player){
             Player player = (Player) event.getWhoClicked();
-            if (event.getInventory().getName().equals(ChatColor.GREEN + "Name Color")){
-                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.WHITE + "White Username")){
+            try{
+            if (event.getInventory().getName().equals(ChatColor.GREEN + "Name Color")) {
+                if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.WHITE + "White Username")) {
                     Profile.getProfileFromUUID(player.getUniqueId(), profile -> profile.setChatColor(ChatColor.WHITE, true));
                     event.setCancelled(true);
-                }else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Orange Username")){
+                } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Orange Username")) {
                     Profile.getProfileFromUUID(player.getUniqueId(), profile -> profile.setChatColor(ChatColor.GOLD, true));
                     event.setCancelled(true);
-                }else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.AQUA + "Light Blue Username")){
+                } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.AQUA + "Light Blue Username")) {
                     Profile.getProfileFromUUID(player.getUniqueId(), profile -> profile.setChatColor(ChatColor.AQUA, true));
                     event.setCancelled(true);
-                }else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.YELLOW + "Yellow Username")) {
+                } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.YELLOW + "Yellow Username")) {
                     Profile.getProfileFromUUID(player.getUniqueId(), profile -> profile.setChatColor(ChatColor.YELLOW, true));
                     event.setCancelled(true);
-                }else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Light Green Username")) {
+                } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Light Green Username")) {
                     Profile.getProfileFromUUID(player.getUniqueId(), profile -> profile.setChatColor(ChatColor.GREEN, true));
                     event.setCancelled(true);
-                }else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_GRAY + "Dark Gray Username")) {
+                } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_GRAY + "Dark Gray Username")) {
                     Profile.getProfileFromUUID(player.getUniqueId(), profile -> profile.setChatColor(ChatColor.DARK_GRAY, true));
                     event.setCancelled(true);
-                }else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Light Gray Username")) {
+                } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Light Gray Username")) {
                     Profile.getProfileFromUUID(player.getUniqueId(), profile -> profile.setChatColor(ChatColor.GRAY, true));
                     event.setCancelled(true);
-                }else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_AQUA + "Cyan Username")) {
+                } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_AQUA + "Cyan Username")) {
                     Profile.getProfileFromUUID(player.getUniqueId(), profile -> profile.setChatColor(ChatColor.DARK_AQUA, true));
                     event.setCancelled(true);
-                }else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE + "Purple Username")) {
+                } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE + "Purple Username")) {
                     Profile.getProfileFromUUID(player.getUniqueId(), profile -> profile.setChatColor(ChatColor.DARK_PURPLE, true));
                     event.setCancelled(true);
-                }else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_BLUE + "Dark Blue Username")) {
+                } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_BLUE + "Dark Blue Username")) {
                     Profile.getProfileFromUUID(player.getUniqueId(), profile -> profile.setChatColor(ChatColor.DARK_BLUE, true));
                     event.setCancelled(true);
-                }else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_GREEN + "Dark Green Username")) {
+                } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_GREEN + "Dark Green Username")) {
                     Profile.getProfileFromUUID(player.getUniqueId(), profile -> profile.setChatColor(ChatColor.DARK_GREEN, true));
                     event.setCancelled(true);
-                }else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.RED + "Red Username")) {
+                } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.RED + "Red Username")) {
                     Profile.getProfileFromUUID(player.getUniqueId(), profile -> profile.setChatColor(ChatColor.RED, true));
                     event.setCancelled(true);
-                }else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Magenta Username")) {
+                } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Magenta Username")) {
                     Profile.getProfileFromUUID(player.getUniqueId(), profile -> profile.setChatColor(ChatColor.LIGHT_PURPLE, true));
                     event.setCancelled(true);
                 }
+            }
+            }catch (NullPointerException e){
+
             }
         }
     }
