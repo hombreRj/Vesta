@@ -1,7 +1,10 @@
 package gg.scenarios.vesta;
 
 import com.google.gson.Gson;
-import gg.scenarios.vesta.events.PlayerListener;
+import gg.scenarios.vesta.commands.ColorCommand;
+import gg.scenarios.vesta.commands.MessageCommand;
+import gg.scenarios.vesta.commands.ReplyCommand;
+import gg.scenarios.vesta.listeners.PlayerListener;
 import gg.scenarios.vesta.managers.ServerManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -70,7 +73,9 @@ public class Vesta extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
     }
     private void registerCommands(){
-
+        getCommand("color").setExecutor(new ColorCommand());
+        getCommand("message").setExecutor(new MessageCommand());
+        getCommand("reply").setExecutor(new ReplyCommand());
     }
     @Override
     public void onDisable() {

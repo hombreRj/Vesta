@@ -4,3 +4,10 @@ main: gg.scenarios.vesta.Vesta
 authors: [IAMRJ]
 description: Vesta is the main server core for Scenarios.gg
 website: https://scenarios.gg
+commands:
+  message:
+    aliases: [msg, m, tell, whisper]
+  reply:
+    aliases: [r]
+  color:
+    aliases: [username, settings]

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Getter
 @Setter
@@ -26,7 +27,7 @@ public class Profile {
     private Player player = null;
     private String username;
     private ChatColor chatColor;
-//    private String prefix = vesta.getChat().getPlayerPrefix(player);
+    private String prefix;
     private String latestIP;
     private List<String> ips;
 
@@ -35,13 +36,25 @@ public class Profile {
         ips = new ArrayList<>();
         player = Bukkit.getPlayer(uuid);
         username = player.getName();
+        prefix = vesta.getChat().getPlayerPrefix(player);
         users.put(uuid, this);
 
     }
 
+    public void setChatColor(ChatColor chatColor) {
+        this.chatColor = chatColor;
+        player.sendMessage(chatColor + "You username has been updated!");
+    }
+    public void setChatColor(ChatColor chatColor, boolean b) {
+        this.chatColor = chatColor;
+        player.sendMessage(chatColor + "You username has been updated!");
+    }
 
     public static Profile getProfileFromUUID(UUID uuid){
         return users.get(uuid);
+    }
+    public static void getProfileFromUUID(UUID uuid, Consumer<Profile> callback){
+        callback.accept(getProfileFromUUID(uuid));
     }
 
     public void addToDatabase(){
@@ -50,7 +63,7 @@ public class Profile {
         document.put("uuid", profile.getUuid().toString());
         document.put("name", profile.getPlayer().getName());
         document.put("chatColor", this.chatColor.getChar());
-      //  document.put("prefix", prefix);
+        document.put("prefix", prefix);
         document.put("ip", this.latestIP);
         document.put("ips", vesta.getGson().toJson(ips));
         vesta.getProfiles().insertOne(document);
@@ -63,7 +76,7 @@ public class Profile {
                 Updates.combine(
                         Updates.set("name", profile.getPlayer().getName()),
                         Updates.set("chatColor", this.chatColor.getChar()),
-                     //   Updates.set("prefix", this.prefix),
+                        Updates.set("prefix", this.prefix),
                         Updates.set("ip", profile.getLatestIP()),
                         Updates.set("ips", vesta.getGson().toJson(ips))));
     }
