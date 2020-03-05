@@ -3,6 +3,7 @@ package gg.scenarios.vesta.managers.profile;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import gg.scenarios.vesta.Vesta;
+import gg.scenarios.vesta.managers.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.Document;
@@ -30,7 +31,8 @@ public class Profile {
     private String prefix;
     private String latestIP;
     private List<String> ips;
-    private UUID tagUUID = null;
+    private UUID tagUUID;
+    private Tag tag;
 
     public Profile(UUID uuid) {
         this.uuid = uuid;
@@ -42,23 +44,40 @@ public class Profile {
 
     }
 
+    public boolean hasTag() {
+        if (tag.getUuid().equals(UUID.fromString("77dbbb02-5050-4966-8e95-2d7552e97779"))) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public void setChatColor(ChatColor chatColor) {
         this.chatColor = chatColor;
-        player.sendMessage(chatColor + "You username has been updated!");
     }
+
     public void setChatColor(ChatColor chatColor, boolean b) {
         this.chatColor = chatColor;
         player.sendMessage(chatColor + "You username has been updated!");
     }
 
-    public static Profile getProfileFromUUID(UUID uuid){
+    public static Profile getProfileFromUUID(UUID uuid) {
         return users.get(uuid);
     }
-    public static void getProfileFromUUID(UUID uuid, Consumer<Profile> callback){
+
+    public static void getProfileFromUUID(UUID uuid, Consumer<Profile> callback) {
         callback.accept(getProfileFromUUID(uuid));
     }
 
-    public void addToDatabase(){
+    public String tienesTag() {
+        if (hasTag()) {
+            return tag.getName();
+        } else {
+            return "none";
+        }
+    }
+
+    public void addToDatabase() {
         Profile profile = this;
         Document document = new org.bson.Document();
         document.put("uuid", profile.getUuid().toString());
@@ -67,6 +86,7 @@ public class Profile {
         document.put("prefix", prefix);
         document.put("ip", this.latestIP);
         document.put("ips", vesta.getGson().toJson(ips));
+        document.put("tag", tienesTag());
         vesta.getProfiles().insertOne(document);
     }
 
@@ -79,7 +99,8 @@ public class Profile {
                         Updates.set("chatColor", this.chatColor.getChar()),
                         Updates.set("prefix", this.prefix),
                         Updates.set("ip", profile.getLatestIP()),
-                        Updates.set("ips", vesta.getGson().toJson(ips))));
+                        Updates.set("ips", vesta.getGson().toJson(ips)),
+                        Updates.set("tag", (hasTag()) ? this.tag.getName() : "none")));
     }
 
 

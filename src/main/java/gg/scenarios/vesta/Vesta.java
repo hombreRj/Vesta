@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import gg.scenarios.vesta.commands.ColorCommand;
 import gg.scenarios.vesta.commands.MessageCommand;
 import gg.scenarios.vesta.commands.ReplyCommand;
+import gg.scenarios.vesta.commands.TagsCommand;
 import gg.scenarios.vesta.listeners.PlayerListener;
 import gg.scenarios.vesta.managers.ServerManager;
+import gg.scenarios.vesta.managers.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import net.milkbowl.vault.chat.Chat;
@@ -20,20 +22,28 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 @Getter
-@Setter
 public class Vesta extends JavaPlugin {
 
-    @Getter public static Vesta instance;
-    @Getter public ServerManager serverManager;
-    @Getter private Permission perms = null;
-    @Getter private Chat chat = null;
-    @Getter private Gson gson = new Gson();
-    @Getter private MongoClientURI clientURI;
-    @Getter private MongoClient mongoClient;
-    @Getter private MongoDatabase mongoDatabase;
-    @Getter private MongoCollection<Document> profiles;
-
-
+    @Getter
+    public static Vesta instance;
+    @Getter
+    public ServerManager serverManager;
+    @Getter
+    private Permission perms = null;
+    @Getter
+    private Chat chat = null;
+    @Getter
+    private Gson gson = new Gson();
+    @Getter
+    private MongoClientURI clientURI;
+    @Getter
+    private MongoClient mongoClient;
+    @Getter
+    private MongoDatabase mongoDatabase;
+    @Getter
+    private MongoCollection<Document> profiles;
+    @Getter
+    private MongoCollection<Document> tags;
 
 
     @Override
@@ -50,12 +60,14 @@ public class Vesta extends JavaPlugin {
     }
 
 
-    private void setupMongo(){
+    private void setupMongo() {
         String uri = getConfig().getString("server.mongo.uri");
         clientURI = new MongoClientURI(uri);
         mongoClient = new MongoClient(clientURI);
         mongoDatabase = mongoClient.getDatabase((serverManager.isDev()) ? "Vesta_dev" : "Vesta_main");
         profiles = mongoDatabase.getCollection("profiles");
+        tags = mongoDatabase.getCollection("tags");
+        Tag.load();
     }
 
     private boolean setupChat() {
@@ -69,14 +81,18 @@ public class Vesta extends JavaPlugin {
         perms = rsp.getProvider();
         return perms != null;
     }
-    private void registerEvents(){
+
+    private void registerEvents() {
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
     }
-    private void registerCommands(){
+
+    private void registerCommands() {
         getCommand("color").setExecutor(new ColorCommand());
         getCommand("message").setExecutor(new MessageCommand());
         getCommand("reply").setExecutor(new ReplyCommand());
+        getCommand("tags").setExecutor(new TagsCommand());
     }
+
     @Override
     public void onDisable() {
         // Plugin shutdown logic

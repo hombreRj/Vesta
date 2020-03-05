@@ -24,10 +24,10 @@ public class ServerManager {
     public HashMap<Player, Player> recentlyMessaged;
     private ArrayList<ChatColor> colors;
 
-    public boolean isDev(){
-        if (serverType.equals(ServerType.DEV)){
+    public boolean isDev() {
+        if (serverType.equals(ServerType.DEV)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -53,7 +53,7 @@ public class ServerManager {
         colors.add(ChatColor.LIGHT_PURPLE);
         colors.add(ChatColor.DARK_PURPLE);
 
-        for (String uuid : config.getStringList("server.ops")){
+        for (String uuid : config.getStringList("server.ops")) {
             ops.add(UUID.fromString(uuid));
         }
     }

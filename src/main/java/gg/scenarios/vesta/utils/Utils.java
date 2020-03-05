@@ -6,8 +6,7 @@ import org.bukkit.DyeColor;
 public class Utils {
 
 
-    public static String translateChatColorToString(ChatColor chatColor)
-    {
+    public static String translateChatColorToString(ChatColor chatColor) {
         switch (chatColor) {
             case AQUA:
                 return "AQUA";
@@ -48,16 +47,17 @@ public class Utils {
         return null;
     }
 
-    public static ChatColor translateChatColorToColor(DyeColor chatColor)
-    {
+    public static ChatColor translateChatColorToColor(DyeColor chatColor) {
         switch (chatColor) {
             case WHITE:
                 return ChatColor.WHITE;
             case ORANGE:
+            case RED:
                 return ChatColor.RED;
             case MAGENTA:
                 return ChatColor.LIGHT_PURPLE;
             case LIGHT_BLUE:
+            case BLUE:
                 return ChatColor.BLUE;
             case YELLOW:
                 return ChatColor.YELLOW;
@@ -71,14 +71,10 @@ public class Utils {
                 return ChatColor.AQUA;
             case PURPLE:
                 return ChatColor.DARK_PURPLE;
-            case BLUE:
-                return ChatColor.BLUE;
             case BROWN:
                 return ChatColor.DARK_BLUE;
             case GREEN:
                 return ChatColor.DARK_GREEN;
-            case RED:
-                return ChatColor.RED;
             case BLACK:
                 return ChatColor.BLACK;
             default:

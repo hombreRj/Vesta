@@ -3,7 +3,7 @@ package gg.scenarios.vesta.enums;
 import lombok.Getter;
 
 @Getter
-public enum  ServerType {
+public enum ServerType {
 
     UHC("Ultra Hard Core"),
     FFA("Free For All"),

@@ -15,18 +15,20 @@ public class MessageCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
         if (command.getName().equalsIgnoreCase("message")) {
-            if(args.length >= 2){
-                if (Bukkit.getPlayer(args[0]) != null ){
+            if (args.length >= 2) {
+                if (Bukkit.getPlayer(args[0]) != null) {
                     Player target = Bukkit.getPlayer(args[0]);
                     StringBuilder message = new StringBuilder();
-                    for (int i = 1; i < args.length; i++){ message.append(args[i]).append(" "); }
-                    player.sendMessage(ChatColor.GRAY + "(To "+ ChatColor.RESET+target.getDisplayName() + ChatColor.GRAY+ ") "+ message.toString());
-                    target.sendMessage(ChatColor.GRAY + "(From "+ ChatColor.RESET+player.getDisplayName() + ChatColor.GRAY+ ") "+ message.toString());
+                    for (int i = 1; i < args.length; i++) {
+                        message.append(args[i]).append(" ");
+                    }
+                    player.sendMessage(ChatColor.GRAY + "(To " + ChatColor.RESET + target.getDisplayName() + ChatColor.GRAY + ") " + message.toString());
+                    target.sendMessage(ChatColor.GRAY + "(From " + ChatColor.RESET + player.getDisplayName() + ChatColor.GRAY + ") " + message.toString());
                     Vesta.getInstance().getServerManager().recentlyMessaged.put(target, player);
-                }else{
+                } else {
                     player.sendMessage(ChatColor.RED + args[0] + " Is not online!");
                 }
-            }else{
+            } else {
                 player.sendMessage(ChatColor.RED + "Invalid Usage.");
             }
         }
