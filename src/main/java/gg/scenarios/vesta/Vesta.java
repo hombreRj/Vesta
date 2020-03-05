@@ -1,10 +1,7 @@
 package gg.scenarios.vesta;
 
 import com.google.gson.Gson;
-import gg.scenarios.vesta.commands.ColorCommand;
-import gg.scenarios.vesta.commands.MessageCommand;
-import gg.scenarios.vesta.commands.ReplyCommand;
-import gg.scenarios.vesta.commands.TagsCommand;
+import gg.scenarios.vesta.commands.*;
 import gg.scenarios.vesta.listeners.PlayerListener;
 import gg.scenarios.vesta.managers.ServerManager;
 import gg.scenarios.vesta.managers.tags.Tag;
@@ -91,6 +88,7 @@ public class Vesta extends JavaPlugin {
         getCommand("message").setExecutor(new MessageCommand());
         getCommand("reply").setExecutor(new ReplyCommand());
         getCommand("tags").setExecutor(new TagsCommand());
+        getCommand("tagadmin").setExecutor(new TagAdminCommand());
     }
 
     @Override
