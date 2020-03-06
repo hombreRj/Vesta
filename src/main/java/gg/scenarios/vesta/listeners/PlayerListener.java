@@ -48,7 +48,7 @@ public class PlayerListener implements Listener {
                 Profile profile = new Profile(player.getUniqueId());
                 profile.setLatestIP(player.getAddress().toString());
                 if (found.getString("tag").equals("none")) {
-                    profile.setTagUUID(UUID.fromString("77dbbb02-5050-4966-8e95-2d7552e97779"));
+                    profile.setTagUUID(Tag.getTagByName("none").getUuid());
                     profile.setTag(Tag.getTagByName("none"));
                 } else {
                     profile.setTagUUID(Objects.requireNonNull(Tag.getTagByName(found.getString("tag"))).getUuid());
@@ -67,7 +67,7 @@ public class PlayerListener implements Listener {
                 profile.setLatestIP(player.getAddress().toString());
                 profile.setChatColor(ChatColor.GREEN);
                 profile.getIps().add(profile.getLatestIP());
-                profile.setTagUUID(UUID.fromString("77dbbb02-5050-4966-8e95-2d7552e97779"));
+                profile.setTagUUID(Tag.getTagByName("none").getUuid());
                 profile.setTag(Tag.getTagByName("none"));
                 profile.addToDatabase();
                 player.sendMessage(ChatColor.GREEN + "Created new profile.");

@@ -18,7 +18,7 @@ public class TagAdminCommand implements CommandExecutor {
                 if (args.length == 2){
                     Tag tag = new Tag(args[1], args[0]);
                     tag.setPermission("scenarios.tags."+ tag.getName());
-                    player.sendMessage("Successfully created the tag " + args[0]);
+                    player.sendMessage(ChatColor.GREEN + "Successfully created the tag " + args[0]);
                     tag.save();
                 }else {
                     player.sendMessage(ChatColor.RED + "/tagadmin <name>  <prefix>");
