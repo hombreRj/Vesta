@@ -88,8 +88,8 @@ public class PlayerListener implements Listener {
             profile.getPlayer().setDisplayName(ChatColor.translateAlternateColorCodes('&', profile.getPrefix()) + profile.getChatColor() + profile.getPlayer().getName());
             event.setFormat(ChatColor.translateAlternateColorCodes('&', profile.getPrefix()) + profile.getChatColor() + profile.getPlayer().getName() + ChatColor.GRAY + ":" + ChatColor.WHITE + "%s".replace("%s", event.getMessage()));
         } else {
-            profile.getPlayer().setDisplayName(ChatColor.translateAlternateColorCodes('&', profile.getPrefix()) + ChatColor.translateAlternateColorCodes('&', profile.getTag().getPrefix()) + profile.getChatColor() + profile.getPlayer().getName());
-            event.setFormat(ChatColor.translateAlternateColorCodes('&', profile.getPrefix()) + ChatColor.translateAlternateColorCodes('&', profile.getTag().getPrefix()) + profile.getChatColor() + profile.getPlayer().getName() + ChatColor.GRAY + ":" + ChatColor.WHITE + "%s".replace("%s", event.getMessage()));
+            profile.getPlayer().setDisplayName(ChatColor.translateAlternateColorCodes('&', profile.getPrefix()) + ChatColor.translateAlternateColorCodes('&', profile.getTag().getPrefix()+ " ") + profile.getChatColor() + profile.getPlayer().getName());
+            event.setFormat(ChatColor.translateAlternateColorCodes('&', profile.getPrefix()) + ChatColor.translateAlternateColorCodes('&', profile.getTag().getPrefix() + " ") + profile.getChatColor() + profile.getPlayer().getName() + ChatColor.GRAY + ":" + ChatColor.WHITE + "%s".replace("%s", event.getMessage()));
 
         }
     }

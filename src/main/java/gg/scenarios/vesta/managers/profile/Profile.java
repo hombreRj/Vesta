@@ -11,10 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 @Getter
@@ -45,7 +42,7 @@ public class Profile {
     }
 
     public boolean hasTag() {
-        if (tag.getUuid().equals(UUID.fromString("77dbbb02-5050-4966-8e95-2d7552e97779"))) {
+        if (tag.getUuid().equals(Objects.requireNonNull(Tag.getTagByName("none")).getUuid())) {
             return false;
         } else {
             return true;
