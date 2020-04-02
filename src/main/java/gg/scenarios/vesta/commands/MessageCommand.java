@@ -1,6 +1,7 @@
 package gg.scenarios.vesta.commands;
 
 import gg.scenarios.vesta.Vesta;
+import gg.scenarios.vesta.managers.profile.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -22,8 +23,10 @@ public class MessageCommand implements CommandExecutor {
                     for (int i = 1; i < args.length; i++) {
                         message.append(args[i]).append(" ");
                     }
-                    player.sendMessage(ChatColor.GRAY + "(To " + ChatColor.RESET + target.getDisplayName() + ChatColor.GRAY + ") " + message.toString());
-                    target.sendMessage(ChatColor.GRAY + "(From " + ChatColor.RESET + player.getDisplayName() + ChatColor.GRAY + ") " + message.toString());
+                    Profile p = Profile.getProfileFromUUID(player.getUniqueId());
+                    Profile t = Profile.getProfileFromUUID(target.getUniqueId());
+                    player.sendMessage(ChatColor.GRAY + "(To " + ChatColor.RESET + ChatColor.translateAlternateColorCodes('&', t.getPrefix())+target.getDisplayName() + ChatColor.GRAY + ") " + message.toString());
+                    target.sendMessage(ChatColor.GRAY + "(From " + ChatColor.RESET + ChatColor.translateAlternateColorCodes('&', p.getPrefix()) +player.getDisplayName() + ChatColor.GRAY + ") " + message.toString());
                     Vesta.getInstance().getServerManager().recentlyMessaged.put(target, player);
                 } else {
                     player.sendMessage(ChatColor.RED + args[0] + " Is not online!");

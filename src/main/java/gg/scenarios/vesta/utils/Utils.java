@@ -1,7 +1,10 @@
 package gg.scenarios.vesta.utils;
 
+import com.sun.jndi.toolkit.url.Uri;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
+
+import java.net.MalformedURLException;
 
 public class Utils {
 
@@ -82,5 +85,12 @@ public class Utils {
         }
 
         return null;
+    }
+
+
+    public static String ip(String s) throws MalformedURLException {
+        String ip = s;
+        Uri uri = new Uri("http://" + ip);
+        return ip = ip.split(":")[0];
     }
 }

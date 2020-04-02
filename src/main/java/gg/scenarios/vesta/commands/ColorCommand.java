@@ -130,7 +130,7 @@ public class ColorCommand implements CommandExecutor {
 
                 player.openInventory(inv);
             }
-        }else{
+        } else {
             sender.sendMessage(ChatColor.RED + "Please buy a rank for this feature /buy");
         }
         return false;

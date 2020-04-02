@@ -1,12 +1,15 @@
 package gg.scenarios.vesta.listeners;
 
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import gg.scenarios.vesta.Vesta;
 
 import gg.scenarios.vesta.managers.profile.Profile;
 import gg.scenarios.vesta.managers.tags.Tag;
+import gg.scenarios.vesta.utils.Utils;
 import net.milkbowl.vault.chat.Chat;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -14,12 +17,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -30,7 +32,7 @@ public class PlayerListener implements Listener {
 
 
     @EventHandler
-    public void onPlayerJoinEvent(PlayerJoinEvent event) {
+    public void onPlayerJoinEvent(PlayerJoinEvent event) throws MalformedURLException {
         if (event.getPlayer() instanceof Player) {
             Player player = event.getPlayer();
             if (player.isOp()) {
@@ -46,7 +48,8 @@ public class PlayerListener implements Listener {
             Document found = vesta.getProfiles().find(new Document("uuid", event.getPlayer().getUniqueId().toString())).first();
             if (found != null) {
                 Profile profile = new Profile(player.getUniqueId());
-                profile.setLatestIP(player.getAddress().toString());
+                profile.setLatestIP(Utils.ip(player.getAddress().toString()));
+                profile.getIps().add(profile.getLatestIP());
                 if (found.getString("tag").equals("none")) {
                     profile.setTagUUID(Tag.getTagByName("none").getUuid());
                     profile.setTag(Tag.getTagByName("none"));
@@ -55,18 +58,22 @@ public class PlayerListener implements Listener {
                     profile.setTag(Tag.getTagByUUID(profile.getTagUUID()));
                 }
                 profile.setChatColor(ChatColor.getByChar(found.getString("chatColor")));
-                ArrayList<String> ips = (ArrayList<String>) vesta.getGson().fromJson(found.getString("ips"),
-                        new TypeToken<ArrayList<String>>() {
-                        }.getType());
-                ips.stream().forEach(s -> {
-                    profile.getIps().add(s);
+                TypeToken<List<String>> token = new TypeToken<List<String>>() {};
+                List<String> ips = vesta.getGson().fromJson(found.getString("ips"), token.getType());
+                ips.forEach(s -> {
+                    try {
+                        profile.getIps().add(Utils.ip(s));
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
                 });
+
                 player.sendMessage(ChatColor.GREEN + "Loaded old profile.");
             } else {
                 Profile profile = new Profile(player.getUniqueId());
-                profile.setLatestIP(player.getAddress().toString());
+                profile.setLatestIP(Utils.ip(player.getAddress().toString()));
                 profile.setChatColor(ChatColor.GREEN);
-                profile.getIps().add(profile.getLatestIP());
+                profile.getIps().add(Utils.ip(profile.getLatestIP()));
                 profile.setTagUUID(Tag.getTagByName("none").getUuid());
                 profile.setTag(Tag.getTagByName("none"));
                 profile.addToDatabase();
@@ -82,14 +89,54 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
+        if (event.getMessage().startsWith("/me") && !player.hasPermission("uhc.admin")) {
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.RED + "You do not have access to that command.");
+        }
+
+        if (event.getMessage().startsWith("/bukkit:") && !player.hasPermission("uhc.admin")) {
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.RED + "You do not have access to that command.");
+        }
+
+        if (event.getMessage().startsWith("/pl") && !event.getMessage().startsWith("/playsound")) {
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.RED +"For information about plugins message Rj on discord");
+        }
+
+        if (event.getMessage().startsWith("/plugins")) {
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.RED +"For information about plugins message Rj on discord");
+        }
+
+        if (event.getMessage().startsWith("/minecraft:") && !player.hasPermission("uhc.admin")) {
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.RED + "You do not have access to that command.");
+        }
+
+        if (event.getMessage().startsWith("//calc")){
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.RED + "You have been reported to all online staff members for attempting to crash the server");
+            for (Player mods : Bukkit.getOnlinePlayers()){
+                if (mods.hasPermission("vesta.staff.admin")){
+                    mods.sendMessage(ChatColor.GREEN + player.getName() + " has attempted to crash the server! command: //calc");
+                }
+            }
+        }
+    }
+
+
+    @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         Profile profile = Profile.getProfileFromUUID(event.getPlayer().getUniqueId());
         if (profile.getTag().getName().equals("none")) {
-            profile.getPlayer().setDisplayName(ChatColor.translateAlternateColorCodes('&', profile.getPrefix()) + profile.getChatColor() + profile.getPlayer().getName());
-            event.setFormat(ChatColor.translateAlternateColorCodes('&', profile.getPrefix()) + profile.getChatColor() + profile.getPlayer().getName() + ChatColor.GRAY + ":" + ChatColor.WHITE + "%s".replace("%s", event.getMessage()));
+            profile.getPlayer().setDisplayName(profile.getPlayer().getName());
+            event.setFormat(ChatColor.translateAlternateColorCodes('&', profile.getPrefix()) + profile.getChatColor() + profile.getPlayer().getDisplayName() + ChatColor.GRAY + ": " + ChatColor.WHITE + "%s".replace("%s", event.getMessage()));
         } else {
-            profile.getPlayer().setDisplayName(ChatColor.translateAlternateColorCodes('&', profile.getPrefix()) + ChatColor.translateAlternateColorCodes('&', profile.getTag().getPrefix()+ " ") + profile.getChatColor() + profile.getPlayer().getName());
-            event.setFormat(ChatColor.translateAlternateColorCodes('&', profile.getPrefix()) + ChatColor.translateAlternateColorCodes('&', profile.getTag().getPrefix() + " ") + profile.getChatColor() + profile.getPlayer().getName() + ChatColor.GRAY + ":" + ChatColor.WHITE + "%s".replace("%s", event.getMessage()));
+            profile.getPlayer().setDisplayName(profile.getPlayer().getName());
+            event.setFormat(ChatColor.translateAlternateColorCodes('&', profile.getPrefix()) + ChatColor.translateAlternateColorCodes('&', profile.getTag().getPrefix() + " ") + profile.getChatColor() + profile.getPlayer().getDisplayName() + ChatColor.GRAY + ": " + ChatColor.WHITE + "%s".replace("%s", event.getMessage()));
 
         }
     }

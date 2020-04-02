@@ -61,7 +61,7 @@ public class Tag {
             rank.setPermission(obj.getString("permission"));
             tags.put(UUID.fromString(obj.getString("uuid")), rank);
         }
-        System.out.println("All ranks have been loaded");
+        System.out.println("All tags have been loaded");
     }
 
     public void save() {

@@ -78,7 +78,13 @@
             <version>1.7</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>gg.scenarios.thorn</groupId>
+            <artifactId>Thorn</artifactId>
+            <version>LATEST</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/thorn.jar</systemPath>
+        </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
