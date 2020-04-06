@@ -21,10 +21,10 @@ public class TagsCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player){
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             Profile profile = Profile.getProfileFromUUID(player.getUniqueId());
-            Inventory inv = Bukkit.createInventory(null, 18, ChatColor.GREEN + "Tags");
+            Inventory inv = Bukkit.createInventory(null, 27, ChatColor.GREEN + "Tags");
             int i = 0;
             for (Tag tag : Tag.tags.values()) {
                 if (!(tag.getName().equals("none"))) {
@@ -41,9 +41,15 @@ public class TagsCommand implements CommandExecutor {
                     inv.setItem(i, itemStack);
                     i++;
                 }
+                ItemStack clear = new ItemStack(Material.PAPER);
+                ItemMeta clearMeta = clear.getItemMeta();
+                clearMeta.setDisplayName(ChatColor.BLUE + "Reset");
+                clear.setItemMeta(clearMeta);
+                inv.setItem(26, clear);
             }
             player.openInventory(inv);
         }
         return false;
     }
+
 }

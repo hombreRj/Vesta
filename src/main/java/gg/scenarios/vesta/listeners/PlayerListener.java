@@ -58,7 +58,8 @@ public class PlayerListener implements Listener {
                     profile.setTag(Tag.getTagByUUID(profile.getTagUUID()));
                 }
                 profile.setChatColor(ChatColor.getByChar(found.getString("chatColor")));
-                TypeToken<List<String>> token = new TypeToken<List<String>>() {};
+                TypeToken<List<String>> token = new TypeToken<List<String>>() {
+                };
                 List<String> ips = vesta.getGson().fromJson(found.getString("ips"), token.getType());
                 ips.forEach(s -> {
                     try {
@@ -103,12 +104,12 @@ public class PlayerListener implements Listener {
 
         if (event.getMessage().startsWith("/pl") && !event.getMessage().startsWith("/playsound")) {
             event.setCancelled(true);
-            player.sendMessage(ChatColor.RED +"For information about plugins message Rj on discord");
+            player.sendMessage(ChatColor.RED + "For information about plugins message Rj on discord");
         }
 
         if (event.getMessage().startsWith("/plugins")) {
             event.setCancelled(true);
-            player.sendMessage(ChatColor.RED +"For information about plugins message Rj on discord");
+            player.sendMessage(ChatColor.RED + "For information about plugins message Rj on discord");
         }
 
         if (event.getMessage().startsWith("/minecraft:") && !player.hasPermission("uhc.admin")) {
@@ -116,11 +117,11 @@ public class PlayerListener implements Listener {
             player.sendMessage(ChatColor.RED + "You do not have access to that command.");
         }
 
-        if (event.getMessage().startsWith("//calc")){
+        if (event.getMessage().startsWith("//calc")) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "You have been reported to all online staff members for attempting to crash the server");
-            for (Player mods : Bukkit.getOnlinePlayers()){
-                if (mods.hasPermission("vesta.staff.admin")){
+            for (Player mods : Bukkit.getOnlinePlayers()) {
+                if (mods.hasPermission("vesta.staff.admin")) {
                     mods.sendMessage(ChatColor.GREEN + player.getName() + " has attempted to crash the server! command: //calc");
                 }
             }
@@ -200,6 +201,15 @@ public class PlayerListener implements Listener {
                             player.sendMessage(ChatColor.GREEN + "You have equipped the " + ChatColor.translateAlternateColorCodes('&', tag.getPrefix()) + ChatColor.GREEN + "Tag");
                             player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 10, 1);
                         }
+                        event.setCancelled(true);
+                    } else if (event.getCurrentItem().getType() == Material.PAPER) {
+                        Tag tag = Tag.getTagByName("none");
+                        Profile profile = Profile.getProfileFromUUID(player.getUniqueId());
+                        assert tag != null;
+                        profile.setTagUUID(tag.getUuid());
+                        profile.setTag(tag);
+                        player.sendMessage(ChatColor.GREEN + "You have disabled your tag");
+                        player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 10, 1);
                         event.setCancelled(true);
                     }
                 }

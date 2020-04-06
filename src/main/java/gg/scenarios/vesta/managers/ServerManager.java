@@ -24,11 +24,7 @@ public class ServerManager {
     public HashMap<Player, Player> recentlyMessaged;
 
     public boolean isDev() {
-        if (serverType.equals(ServerType.DEV)) {
-            return true;
-        } else {
-            return false;
-        }
+        return serverType.equals(ServerType.DEV);
     }
 
     public ServerManager() {
