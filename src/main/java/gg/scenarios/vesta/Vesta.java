@@ -64,7 +64,8 @@ public class Vesta extends JavaPlugin {
         mongoDatabase = mongoClient.getDatabase((serverManager.isDev()) ? "Vesta_dev" : "Vesta_main");
         profiles = mongoDatabase.getCollection("profiles");
         tags = mongoDatabase.getCollection("tags");
-        Tag.load();}
+        Tag.load();
+    }
 
 
     private boolean setupChat() {
