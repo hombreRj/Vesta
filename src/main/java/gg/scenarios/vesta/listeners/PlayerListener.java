@@ -6,6 +6,7 @@ import gg.scenarios.vesta.Vesta;
 
 import gg.scenarios.vesta.managers.profile.Profile;
 import gg.scenarios.vesta.managers.tags.Tag;
+import gg.scenarios.vesta.utils.ChatUtil;
 import gg.scenarios.vesta.utils.Utils;
 import net.milkbowl.vault.chat.Chat;
 import org.bson.Document;
@@ -33,55 +34,57 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event) throws MalformedURLException {
-        if (event.getPlayer() instanceof Player) {
-            Player player = event.getPlayer();
-            if (player.isOp()) {
-                if (!(vesta.getServerManager().getOps().contains(player.getUniqueId()))) {
-                    player.setOp(false);
-                    player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "You are not able to have OP on this server!");
-                } else {
-                    player.setOp(true);
-                    player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Your OP powers have been granted!");
-                }
-            }
-
-            Document found = vesta.getProfiles().find(new Document("uuid", event.getPlayer().getUniqueId().toString())).first();
-            if (found != null) {
-                Profile profile = new Profile(player.getUniqueId());
-                profile.setLatestIP(Utils.ip(player.getAddress().toString()));
-                profile.getIps().add(profile.getLatestIP());
-                if (found.getString("tag").equals("none")) {
-                    profile.setTagUUID(Tag.getTagByName("none").getUuid());
-                    profile.setTag(Tag.getTagByName("none"));
-                } else {
-                    profile.setTagUUID(Objects.requireNonNull(Tag.getTagByName(found.getString("tag"))).getUuid());
-                    profile.setTag(Tag.getTagByUUID(profile.getTagUUID()));
-                }
-                profile.setChatColor(ChatColor.getByChar(found.getString("chatColor")));
-                TypeToken<List<String>> token = new TypeToken<List<String>>() {
-                };
-                List<String> ips = vesta.getGson().fromJson(found.getString("ips"), token.getType());
-                ips.forEach(s -> {
-                    try {
-                        profile.getIps().add(Utils.ip(s));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }
-                });
-
-                player.sendMessage(ChatColor.GREEN + "Loaded old profile.");
+        Player player = event.getPlayer();
+        if (player.hasPermission("vesta.staff")){
+            String msg = ChatUtil.format("&8[&5Staff&8] &7[&3" + player.getName() + "&7]&b has connected to server: &9" + vesta.getServerManager().getServerName());
+            vesta.getRedis().getClient().getTopic("staff").publishAsync("vesta.staff;" +msg);
+        }
+        if (player.isOp()) {
+            if (!(vesta.getServerManager().getOps().contains(player.getUniqueId()))) {
+                player.setOp(false);
+                player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "You are not able to have OP on this server!");
             } else {
-                Profile profile = new Profile(player.getUniqueId());
-                profile.setLatestIP(Utils.ip(player.getAddress().toString()));
-                profile.setChatColor(ChatColor.GREEN);
-                profile.getIps().add(Utils.ip(profile.getLatestIP()));
-                profile.setTagUUID(Tag.getTagByName("none").getUuid());
-                profile.setTag(Tag.getTagByName("none"));
-                profile.addToDatabase();
-                player.sendMessage(ChatColor.GREEN + "Created new profile.");
+                player.setOp(true);
+                player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Your OP powers have been granted!");
             }
         }
+        Document found = vesta.getProfiles().find(new Document("uuid", event.getPlayer().getUniqueId().toString())).first();
+        if (found != null) {
+            Profile profile = new Profile(player.getUniqueId());
+            profile.setLatestIP(Utils.ip(player.getAddress().toString()));
+            profile.getIps().add(profile.getLatestIP());
+            if (found.getString("tag").equals("none")) {
+                profile.setTagUUID(Tag.getTagByName("none").getUuid());
+                profile.setTag(Tag.getTagByName("none"));
+            } else {
+                profile.setTagUUID(Objects.requireNonNull(Tag.getTagByName(found.getString("tag"))).getUuid());
+                profile.setTag(Tag.getTagByUUID(profile.getTagUUID()));
+            }
+            profile.setChatColor(ChatColor.getByChar(found.getString("chatColor")));
+            TypeToken<List<String>> token = new TypeToken<List<String>>() {
+            };
+            List<String> ips = vesta.getGson().fromJson(found.getString("ips"), token.getType());
+            ips.forEach(s -> {
+                try {
+                    profile.getIps().add(Utils.ip(s));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            player.sendMessage(ChatColor.GREEN + "Loaded old profile.");
+        } else {
+            Profile profile = new Profile(player.getUniqueId());
+            profile.setLatestIP(Utils.ip(player.getAddress().toString()));
+            profile.setChatColor(ChatColor.GREEN);
+            profile.getIps().add(Utils.ip(profile.getLatestIP()));
+            profile.setTagUUID(Tag.getTagByName("none").getUuid());
+            profile.setTag(Tag.getTagByName("none"));
+            profile.addToDatabase();
+            player.sendMessage(ChatColor.GREEN + "Created new profile.");
+        }
     }
+
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
@@ -131,6 +134,16 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        if (event.getMessage().startsWith("!")) {
+            if (player.hasPermission("vesta.staff")) {
+                String msg = ChatUtil.format("&8[&5Staff&8] &7[&d" + vesta.getServerManager().getServerName() + "&7] &7[&3" + player.getName() + "&7]: &f" + event.getMessage().substring(1));
+                vesta.getRedis().getClient().getTopic("staff").publishAsync("vesta.staff;" + msg);
+                event.setCancelled(true);
+            }
+        }
+
+
         Profile profile = Profile.getProfileFromUUID(event.getPlayer().getUniqueId());
         if (profile.getTag().getName().equals("none")) {
             profile.getPlayer().setDisplayName(profile.getPlayer().getName());

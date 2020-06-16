@@ -6,3 +6,7 @@ server:
     - "26f8cf1d-f9e1-470c-85cb-f670cf30de57"
     - "1aea0c7b-d34b-4173-8630-917174e844a2"
     - "c39a0579-3463-4af7-a118-6011a050a63f"
+  name: 'Development'
+  announceMessages:
+    - '&aJoin our discord to apply for staff and keep update to date &f&b&o&n/discord'
+    - '&aRegister on our website! &f&b&o&nhttps://scenarios.gg/'

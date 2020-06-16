@@ -71,6 +71,11 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.3.0</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/net.milkbowl.vault/VaultAPI -->
         <dependency>
             <groupId>net.milkbowl.vault</groupId>

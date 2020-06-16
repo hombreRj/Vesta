@@ -1,7 +1,9 @@
 package gg.scenarios.vesta;
 
 import com.google.gson.Gson;
+import gg.scenarios.vesta.announcer.Announcer;
 import gg.scenarios.vesta.commands.*;
+import gg.scenarios.vesta.database.Redis;
 import gg.scenarios.vesta.listeners.PlayerListener;
 import gg.scenarios.vesta.managers.ServerManager;
 import gg.scenarios.vesta.managers.tags.Tag;
@@ -41,7 +43,8 @@ public class Vesta extends JavaPlugin {
     private MongoCollection<Document> profiles;
     @Getter
     private MongoCollection<Document> tags;
-
+    @Getter
+    private Redis redis;
 
     @Override
     public void onEnable() {
@@ -54,6 +57,8 @@ public class Vesta extends JavaPlugin {
         setupPermissions();
         setupChat();
         setupMongo();
+        redis = new Redis(this);
+        new Announcer(this);
     }
 
 
@@ -90,6 +95,10 @@ public class Vesta extends JavaPlugin {
         getCommand("reply").setExecutor(new ReplyCommand());
         getCommand("tags").setExecutor(new TagsCommand());
         getCommand("tagadmin").setExecutor(new TagAdminCommand());
+        getCommand("gamemode").setExecutor(new GameModeCommand(this));
+        getCommand("staffchat").setExecutor(new StaffChatCommand(this));
+        getCommand("announce").setExecutor(new AnnounceCommand(this));
+        getCommand("discord").setExecutor(new DiscordCommand(this));
     }
 
     @Override

@@ -20,8 +20,11 @@ public class ServerManager {
     private FileConfiguration config = vesta.getConfig();
 
     private ServerType serverType;
+    private String serverName;
     private List<UUID> ops = new ArrayList<>();
     public HashMap<Player, Player> recentlyMessaged;
+
+    private List<String> announceMessages;
 
     public boolean isDev() {
         return serverType.equals(ServerType.DEV);
@@ -30,7 +33,8 @@ public class ServerManager {
     public ServerManager() {
         this.serverType = ServerType.valueOf(config.getString("server.type"));
         recentlyMessaged = new HashMap<>();
-
+        announceMessages = config.getStringList("server.announceMessages");
+        serverName = config.getString("server.name");
         for (String uuid : config.getStringList("server.ops")) {
             ops.add(UUID.fromString(uuid));
         }
