@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import gg.scenarios.vesta.announcer.Announcer;
 import gg.scenarios.vesta.commands.*;
 import gg.scenarios.vesta.database.Redis;
+import gg.scenarios.vesta.exploits.CustomPayloadFixer;
 import gg.scenarios.vesta.listeners.PlayerListener;
 import gg.scenarios.vesta.managers.ServerManager;
 import gg.scenarios.vesta.managers.tags.Tag;
@@ -59,6 +60,7 @@ public class Vesta extends JavaPlugin {
         setupMongo();
         redis = new Redis(this);
         new Announcer(this);
+        new CustomPayloadFixer(this);
     }
 
 
