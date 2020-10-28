@@ -11,7 +11,7 @@ public enum ServerType {
     TOURNAMENT("Tournament"),
     DEV("Development");
 
-    private String name;
+    private final String name;
 
     ServerType(String name) {
         this.name = name;

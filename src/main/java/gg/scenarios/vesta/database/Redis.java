@@ -13,17 +13,14 @@ import static org.bukkit.Bukkit.getConsoleSender;
 @Getter
 public class Redis {
 
-    private RedissonClient client;
+    @Getter private final RedissonClient client = Redisson.create();
     private final Vesta vesta;
 
     public Redis(Vesta vesta) {
         this.vesta = vesta;
 
-        Config config = new Config();
-        config.useSingleServer().setAddress("157.245.227.156:6379");
-        config.useSingleServer().setPassword("Mondosbeach1");
 
-        this.client = Redisson.create(config);
+
 
         client.getTopic("global").addListener((s, o) -> {
             Bukkit.broadcastMessage(ChatUtil.format(o.toString()));

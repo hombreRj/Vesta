@@ -16,7 +16,7 @@ public class DiscordCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        sender.sendMessage(ChatUtil.format("&a&LDISCORD: &f&a&o https://discord.gg/uY8ujfE"));
+        sender.sendMessage(ChatUtil.format("&a&LDISCORD: &f&a&ohttps://discord.gg/cdG3Wjd"));
         return false;
     }
 }
