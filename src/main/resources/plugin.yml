@@ -21,3 +21,4 @@ commands:
   announce:
     aliases: [bc, broadcast]
   discord:
+  hub:

@@ -49,6 +49,7 @@ public class Vesta extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         instance = this;
         saveDefaultConfig();
         saveConfig();
@@ -101,6 +102,7 @@ public class Vesta extends JavaPlugin {
         getCommand("staffchat").setExecutor(new StaffChatCommand(this));
         getCommand("announce").setExecutor(new AnnounceCommand(this));
         getCommand("discord").setExecutor(new DiscordCommand(this));
+        getCommand("hub").setExecutor(new HubCommand(this));
     }
 
     @Override
