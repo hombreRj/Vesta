@@ -3,7 +3,13 @@ Vesta is the main server core for scenarios.gg
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Old plugin, wouldn't recommend anyone use it, this does not demostrate my current development abilities. I made this freshman year of college. As you can imagine, I am a better developer.
+
+Thanks
+
+Use it however you want just give me credit ty.
+
+Rj
 
 ### Prerequisites
 
@@ -44,7 +50,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Authors
 
-* **Rj** - *Lead Developer* - [peacers](https://github.com/peacers)
+* **Rj** - *Lead Developer* 
 
 ## License
 
